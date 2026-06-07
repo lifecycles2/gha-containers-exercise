@@ -17,23 +17,23 @@ jobs:
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
       # MONGODB_CLUSTER_ADDRESS: mongodb_name # service container with container
-      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017 # service container without container
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017 # service container without container (just on runner)
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 8080
     services:
       mongodb_name:
         image: mongo
-        ports: # service container without container
+        ports: # service container without container (just on runner)
           - 27017:27017 # maps internal 27017 forwarded to the same port on the runner machine
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
     steps:
       - name: Get Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: ${{ env.CACHE_KEY }}-${{ hashFiles('**/package-lock.json') }}
