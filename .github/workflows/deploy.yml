@@ -12,19 +12,20 @@ jobs:
     # timeout-minutes: 25
     environment: testing
     runs-on: ubuntu-latest
-    container:
-      image: node:16
     # container:
-    #   image: mcr.microsoft.com/playwright:v1.25.0-focal
+    #   image: node:16 # from docker hub
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
-      MONGODB_CLUSTER_ADDRESS: mongodb_name
+      # MONGODB_CLUSTER_ADDRESS: mongodb_name # service container with container
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017 # service container without container
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 8080
     services:
       mongodb_name:
         image: mongo
+        ports: # service container without container
+          - 27017:27017 # maps internal 27017 forwarded to the same port on the runner machine
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
